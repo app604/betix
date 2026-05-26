@@ -1,46 +1,17 @@
 workflows:
   ios-release:
     name: iOS Release
-    max_build_duration: 60
-    instance_type: mac_mini_m2
-
-    integrations:
-      app_store_connect: Codemagic
-
     environment:
       ios_signing:
-        distribution_type: app_store
+        distribution_type: app_store  # или ad_hoc
         bundle_identifier: com.betix.sportstrainings
-
-      xcode: latest
-
     scripts:
-      - name: Install dependencies
-        script: |
-          xcodebuild -resolvePackageDependencies
-
-      - name: Build & Archive
+      - name: Build iOS
         script: |
           xcodebuild \
-            -project "App.xcodeproj" \
-            -scheme "Betix" \
+            -project App.xcodeproj \
+            -scheme LineWorkoutFlow \
             -configuration Release \
             -destination 'generic/platform=iOS' \
-            -archivePath build/Betix.xcarchive \
+            -archivePath build/LineWorkoutFlow.xcarchive \
             archive
-
-      - name: Export IPA
-        script: |
-          xcodebuild \
-            -exportArchive \
-            -archivePath build/Betix.xcarchive \
-            -exportPath build/ \
-            -exportOptionsPlist exportOptions.plist
-
-    artifacts:
-      - build/*.ipa
-
-    publishing:
-      app_store_connect:
-        auth: integration
-        submit_to_testflight: true
