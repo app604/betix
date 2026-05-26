@@ -12,7 +12,13 @@ workflows:
         distribution_type: app_store
         bundle_identifier: com.betix.sportstrainings
 
+      xcode: latest
+
     scripts:
+      - name: Install dependencies
+        script: |
+          xcodebuild -resolvePackageDependencies
+
       - name: Build & Archive
         script: |
           xcodebuild \
