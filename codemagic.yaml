@@ -13,16 +13,6 @@ workflows:
         bundle_identifier: com.betix.sportstrainings
 
     scripts:
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          app-store-connect fetch-signing-files \
-            com.betix.sportstrainings \
-            --type IOS_APP_STORE \
-            --create
-          keychain add-certificates
-          xcode-project use-profiles
-
       - name: Build & Archive
         script: |
           xcodebuild \
