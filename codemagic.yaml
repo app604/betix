@@ -16,11 +16,11 @@ workflows:
       - name: Set up code signing
         script: |
           keychain initialize
-          app-store-connect create-certificate --type IOS_DISTRIBUTION
           app-store-connect fetch-signing-files \
             com.betix.sportstrainings \
             --type IOS_APP_STORE \
-            --create
+            --create \
+            --create-certificate
           keychain add-certificates
           xcode-project use-profiles
 
