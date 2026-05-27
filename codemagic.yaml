@@ -36,6 +36,7 @@ workflows:
             -authenticationKeyIssuerID 00612d7a-7852-4d01-a1b4-f703bd0a3278 \
             CODE_SIGN_STYLE=Manual \
             CODE_SIGN_IDENTITY="iPhone Distribution" \
+            PROVISIONING_PROFILE_SPECIFIER="Sports and trainings ios_app_store 1779872953" \
             DEVELOPMENT_TEAM=9NP557QPW7 \
             archive
 
