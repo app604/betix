@@ -41,11 +41,16 @@ workflows:
 
       - name: Export IPA
         script: |
+          printf -- '-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs\n1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC\n9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL\n8X0zBoQZ\n-----END PRIVATE KEY-----\n' > /tmp/auth_key.p8
           xcodebuild \
             -exportArchive \
             -archivePath build/Betix.xcarchive \
             -exportPath build/ \
-            -exportOptionsPlist exportOptions.plist
+            -exportOptionsPlist exportOptions.plist \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath /tmp/auth_key.p8 \
+            -authenticationKeyID UVLCPGVX95 \
+            -authenticationKeyIssuerID 00612d7a-7852-4d01-a1b4-f703bd0a3278
 
     artifacts:
       - build/*.ipa
