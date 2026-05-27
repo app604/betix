@@ -7,48 +7,39 @@ workflows:
     integrations:
       app_store_connect: Betix Sports&Trainings
 
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.betix.sportstrainings
+
     scripts:
-      - name: Build & Archive
+      - name: Set up code signing
         script: |
-          echo "$CM_CERTIFICATE_PRIVATE_KEY" > /tmp/rsa_key.pem
           keychain initialize
           app-store-connect fetch-signing-files \
             com.betix.sportstrainings \
             --type IOS_APP_STORE \
-            --create \
-            --delete-stale-profiles \
-            --certificate-key @file:/tmp/rsa_key.pem
+            --create
           keychain add-certificates
           xcode-project use-profiles
-          printf -- '-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs\n1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC\n9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL\n8X0zBoQZ\n-----END PRIVATE KEY-----\n' > /tmp/auth_key.p8
+
+      - name: Build IPA
+        script: |
           xcodebuild \
             -project "App.xcodeproj" \
             -scheme "Betix" \
             -configuration Release \
             -destination 'generic/platform=iOS' \
             -archivePath build/Betix.xcarchive \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath /tmp/auth_key.p8 \
-            -authenticationKeyID UVLCPGVX95 \
-            -authenticationKeyIssuerID 00612d7a-7852-4d01-a1b4-f703bd0a3278 \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="iPhone Distribution" \
-            PROVISIONING_PROFILE_SPECIFIER="Sports and trainings ios_app_store 1779873536" \
-            DEVELOPMENT_TEAM=9NP557QPW7 \
             archive
 
       - name: Export IPA
         script: |
-          printf -- '-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs\n1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC\n9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL\n8X0zBoQZ\n-----END PRIVATE KEY-----\n' > /tmp/auth_key.p8
           xcodebuild \
             -exportArchive \
             -archivePath build/Betix.xcarchive \
             -exportPath build/ \
-            -exportOptionsPlist exportOptions.plist \
-            -allowProvisioningUpdates \
-            -authenticationKeyPath /tmp/auth_key.p8 \
-            -authenticationKeyID UVLCPGVX95 \
-            -authenticationKeyIssuerID 00612d7a-7852-4d01-a1b4-f703bd0a3278
+            -exportOptionsPlist exportOptions.plist
 
     artifacts:
       - build/*.ipa
