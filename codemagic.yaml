@@ -23,7 +23,9 @@ workflows:
 
       - name: Build & Archive
         script: |
-          echo "$APP_STORE_CONNECT_PRIVATE_KEY" > /tmp/auth_key.p8
+          echo "-----BEGIN PRIVATE KEY-----" > /tmp/auth_key.p8
+          echo "$APP_STORE_CONNECT_PRIVATE_KEY" | tr ' ' '\n' >> /tmp/auth_key.p8
+          echo "-----END PRIVATE KEY-----" >> /tmp/auth_key.p8
           xcodebuild \
             -project "App.xcodeproj" \
             -scheme "Betix" \
