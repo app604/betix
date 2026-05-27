@@ -23,14 +23,7 @@ workflows:
 
       - name: Build & Archive
         script: |
-          cat > /tmp/auth_key.p8 << 'EOF'
------BEGIN PRIVATE KEY-----
-MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs
-1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC
-9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL
-8X0zBoQZ
------END PRIVATE KEY-----
-EOF
+          printf -- '-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs\n1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC\n9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL\n8X0zBoQZ\n-----END PRIVATE KEY-----\n' > /tmp/auth_key.p8
           xcodebuild \
             -project "App.xcodeproj" \
             -scheme "Betix" \
