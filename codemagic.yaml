@@ -19,8 +19,7 @@ workflows:
           app-store-connect fetch-signing-files \
             com.betix.sportstrainings \
             --type IOS_APP_STORE \
-            --create \
-            --create-certificate
+            --create
           keychain add-certificates
           xcode-project use-profiles
 
