@@ -10,8 +10,7 @@ workflows:
     scripts:
       - name: Set up code signing
         script: |
-          openssl genrsa -out /tmp/rsa_key.pem 2048
-          cat /tmp/rsa_key.pem
+          echo "$CM_CERTIFICATE_PRIVATE_KEY" > /tmp/rsa_key.pem
           keychain initialize
           app-store-connect fetch-signing-files \
             com.betix.sportstrainings \
