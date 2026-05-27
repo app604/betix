@@ -10,17 +10,18 @@ workflows:
     scripts:
       - name: Set up code signing
         script: |
-          echo "$CM_CERTIFICATE_PRIVATE_KEY" > /tmp/rsa_key.pem
+          openssl genrsa -out /tmp/rsa_key.pem 2048
+          cat /tmp/rsa_key.pem
           keychain initialize
           app-store-connect fetch-signing-files \
             com.betix.sportstrainings \
             --type IOS_APP_STORE \
             --create \
-            --certificate-key @file:/tmp/rsa_key.pem \
-            --delete-stale-profiles
+            --delete-stale-profiles \
+            --certificate-key @file:/tmp/rsa_key.pem
           keychain add-certificates
           xcode-project use-profiles
-          
+
       - name: Build & Archive
         script: |
           printf -- '-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs\n1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC\n9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL\n8X0zBoQZ\n-----END PRIVATE KEY-----\n' > /tmp/auth_key.p8
@@ -41,11 +42,6 @@ workflows:
 
       - name: Export IPA
         script: |
-          echo "$CM_CERTIFICATE_PRIVATE_KEY" > /tmp/rsa_key.pem
-          app-store-connect fetch-signing-files \
-            com.betix.sportstrainings \
-            --type IOS_APP_STORE \
-            --certificate-key @file:/tmp/rsa_key.pem
           printf -- '-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs\n1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC\n9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL\n8X0zBoQZ\n-----END PRIVATE KEY-----\n' > /tmp/auth_key.p8
           xcodebuild \
             -exportArchive \
