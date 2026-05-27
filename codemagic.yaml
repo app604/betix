@@ -23,9 +23,14 @@ workflows:
 
       - name: Build & Archive
         script: |
-          echo "-----BEGIN PRIVATE KEY-----" > /tmp/auth_key.p8
-          echo "$APP_STORE_CONNECT_PRIVATE_KEY" | tr ' ' '\n' >> /tmp/auth_key.p8
-          echo "-----END PRIVATE KEY-----" >> /tmp/auth_key.p8
+          cat > /tmp/auth_key.p8 << 'EOF'
+-----BEGIN PRIVATE KEY-----
+MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs
+1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC
+9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL
+8X0zBoQZ
+-----END PRIVATE KEY-----
+EOF
           xcodebuild \
             -project "App.xcodeproj" \
             -scheme "Betix" \
@@ -38,7 +43,7 @@ workflows:
             -authenticationKeyIssuerID 00612d7a-7852-4d01-a1b4-f703bd0a3278 \
             DEVELOPMENT_TEAM=9NP557QPW7 \
             archive
-            
+
       - name: Export IPA
         script: |
           xcodebuild \
