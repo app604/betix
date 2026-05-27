@@ -11,13 +11,11 @@ workflows:
       - name: Set up code signing
         script: |
           keychain initialize
-          app-store-connect create-certificate \
-            --type IOS_DISTRIBUTION \
-            --save-locally
           app-store-connect fetch-signing-files \
             com.betix.sportstrainings \
             --type IOS_APP_STORE \
-            --create
+            --create \
+            --certificate-key /tmp/auth_key.p8
           keychain add-certificates
           xcode-project use-profiles
 
@@ -34,6 +32,7 @@ workflows:
             -authenticationKeyPath /tmp/auth_key.p8 \
             -authenticationKeyID UVLCPGVX95 \
             -authenticationKeyIssuerID 00612d7a-7852-4d01-a1b4-f703bd0a3278 \
+            CODE_SIGN_STYLE=Automatic \
             DEVELOPMENT_TEAM=9NP557QPW7 \
             archive
 
