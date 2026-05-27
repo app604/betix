@@ -32,10 +32,11 @@ workflows:
             -archivePath build/Betix.xcarchive \
             -allowProvisioningUpdates \
             -authenticationKeyPath /tmp/auth_key.p8 \
-            -authenticationKeyID "$APP_STORE_CONNECT_KEY_ID" \
-            -authenticationKeyIssuerID "$APP_STORE_CONNECT_ISSUER_ID" \
+            -authenticationKeyID UVLCPGVX95 \
+            -authenticationKeyIssuerID 00612d7a-7852-4d01-a1b4-f703bd0a3278 \
             DEVELOPMENT_TEAM=9NP557QPW7 \
             archive
+            
       - name: Export IPA
         script: |
           xcodebuild \
