@@ -30,6 +30,9 @@ workflows:
             -destination 'generic/platform=iOS' \
             -archivePath build/Betix.xcarchive \
             -allowProvisioningUpdates \
+            -authenticationKeyPath "$APP_STORE_CONNECT_PRIVATE_KEY" \
+            -authenticationKeyID "$APP_STORE_CONNECT_KEY_ID" \
+            -authenticationKeyIssuerID "$APP_STORE_CONNECT_ISSUER_ID" \
             DEVELOPMENT_TEAM=9NP557QPW7 \
             archive
 
