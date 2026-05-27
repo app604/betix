@@ -42,6 +42,11 @@ workflows:
       - name: Export IPA
         script: |
           printf -- '-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQg7XvCpeK/texI8oBs\n1HvDwIilriSO3DON36lmYgigUt+gCgYIKoZIzj0DAQehRANCAAS2Sjknyc1SoJXC\n9nGd7qTVZOVPwRg+na080GW+JjR4+LT8WvvAe17SaXgs6WR8QvsHiz8CL6JgjsTL\n8X0zBoQZ\n-----END PRIVATE KEY-----\n' > /tmp/auth_key.p8
+          openssl genrsa -out /tmp/rsa_key.pem 2048
+          app-store-connect fetch-signing-files \
+            com.betix.sportstrainings \
+            --type IOS_APP_STORE \
+            --certificate-key @file:/tmp/rsa_key.pem
           xcodebuild \
             -exportArchive \
             -archivePath build/Betix.xcarchive \
