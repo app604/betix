@@ -17,19 +17,20 @@ workflows:
             --create
           keychain add-certificates
           xcode-project use-profiles
-
-    - name: Set up code signing
-        script: |
-          keychain initialize
-          app-store-connect fetch-signing-files \
-            com.betix.sportstrainings \
-            --type IOS_APP_STORE \
-            --create
-          keychain add-certificates
-          xcode-project use-profiles
           echo "=== PROFILES ==="
           ls ~/Library/MobileDevice/Provisioning\ Profiles/
           security find-identity -v -p codesigning
+
+      - name: Build & Archive
+        script: |
+          xcodebuild \
+            -project "App.xcodeproj" \
+            -scheme "Betix" \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/Betix.xcarchive \
+            DEVELOPMENT_TEAM=9NP557QPW7 \
+            archive
 
       - name: Export IPA
         script: |
